@@ -15,4 +15,39 @@ CHIP Mux {
 
     PARTS:
     // Put your code here:
+	
+	// I can implement it like (a and NotB and Notsel) or (a and b and Notsel) or( Nota and b and sel) or(a and b and sel)
+
+
+	Not(in = b, out = NotB);
+	And(a = a , b = NotB, out = aANDnotb);
+	Not(in = sel, out = NotSel);
+	And(a = aANDnotb, b = NotSel, out = out1);
+
+
+	
+	And(a = a , b = b, out = aANDb);
+	And(a = aANDb, b = NotSel, out = out2);
+
+
+	Not(in = a, out = NotA);
+	And(a = NotA , b = b, out = NotaANDb);
+	And(a = NotaANDb, b = sel, out = out3);
+
+
+	And(a = aANDb, b = sel, out = out4);
+
+
+
+	Or(a = out1 , b = out2 , out = temp1);
+	Or(a = temp1, b = out3, out = temp2);
+	Or(a = temp2, b = out4, out = out);	
+
+
+
+	
+
+	
+	
+
 }

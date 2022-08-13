@@ -14,4 +14,16 @@ CHIP Xor {
 
     PARTS:
     // Put your code here:
+	// I can implement as a xor b = (a and not(b)) or (not(a) and b)
+
+	Not(in = b, out = NotB);
+	And(a = a, b = NotB, out = out1);
+	
+	Not(in = a, out = NotA);
+	And(a = NotA, b = b, out = out2);
+
+	Or(a = out1, b = out2 , out = out);
+
+
+
 }

@@ -15,4 +15,11 @@ CHIP And {
 
     PARTS:
     // Put your code here:
+    // (x AND y) = NOT(x NAND y)
+
+
+	Nand(a = a, b = b, out = temp1);
+	Not(in = temp1, out = out);
+
+
 }

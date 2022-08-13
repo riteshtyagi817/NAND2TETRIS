@@ -15,4 +15,19 @@ CHIP DMux {
 
     PARTS:
     // Put your code here:
+	  // I can implement it as a = (in and Notsel) , b = (in and sel)
+
+
+		Not(in = sel, out = Notsel);
+		And(a = in , b = Notsel, out = a);
+
+		And(a = in , b = sel , out = b);
+
+
+
+
+
+
+
+
 }

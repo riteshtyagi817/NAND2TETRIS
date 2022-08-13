@@ -15,4 +15,16 @@ CHIP Or {
 
     PARTS:
     // Put your code here:
+	// we can write it as a or b = Not(Not(a) AND Not(b))
+	Not(in = a, out = NotA);
+	Not(in = b, out = NotB);
+	And(a = NotA, b = NotB, out = out1);
+	Not(in = out1, out = out);
+
+	
+
+
+
+
+
 }
