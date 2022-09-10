@@ -14,4 +14,9 @@ CHIP FullAdder {
 
     PARTS:
     // Put you code here:
+    // can be built using two half adders + or gate
+	HalfAdder(a = b, b = c, sum = temp, carry = temp1);
+	HalfAdder(a = temp, b = a, sum = sum, carry = temp2);
+	Or(a = temp1, b = temp2, out = carry);
+	
 }

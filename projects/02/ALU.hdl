@@ -43,4 +43,42 @@ CHIP ALU {
 
     PARTS:
    // Put you code here:
+   // need to use combinations of previous gates
+   Mux16(a = x, b = false, sel = zx, out = out1);
+   Not16(in = out1, out = notx);
+   
+   Mux16(a = out1, b = notx, sel = nx, out = out2);
+
+   Mux16(a = y, b = false, sel = zy, out = out3);
+
+   Not16(in = out3, out = noty);
+
+   Mux16(a = out3, b = noty, sel = ny, out = out4);
+
+
+   Add16(a = out2, b = out4, out = xplusy);
+   And16(a = out2, b = out4, out = xandy);
+
+   Mux16(a = xandy, b = xplusy, sel = f, out = f1output);
+
+   Not16(in = f1output, out = notout);
+
+   Mux16(a = f1output, b = notout, sel = no, out = out);
+
+   // to use MSB later to caluculate negative or positive
+   Mux16(a=f1output, b=notout, sel=no, out[15]=s, out[0..14]=t);
+   Mux16(a=f1output, b=notout, sel=no, out[0..7]=aa, out[8..15]=bb);
+
+   // using Or8way as I have implemented already
+   Or8Way(in=aa, out=xx);
+   Or8Way(in=bb, out=zz);
+   Or(a=xx, b=zz, out=yy);
+   Not(in=yy, out=zr);
+   
+   Mux(a=false, b=true, sel=s, out=ng);
+
+
+
+
+	
 }
