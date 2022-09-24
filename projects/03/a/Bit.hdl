@@ -15,4 +15,10 @@ CHIP Bit {
 
     PARTS:
     // Put your code here:
+	// can be implemented using DFF and multiplexor
+	Mux(a = out1, b = in, sel = load, out = temp);
+	DFF(in = temp , out = out1);
+	DFF(in = temp , out = out);
+	
+
 }
