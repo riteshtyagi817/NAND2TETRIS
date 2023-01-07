@@ -40,4 +40,86 @@ CHIP CPU {
 
     PARTS:
     // Put your code here:
+
+            
+    // Mux before A
+    Mux16(a = instruction, b =AluOut, sel = instruction[15], out = AInput);
+
+    // will be used in ALoad
+
+    Not(in = instruction[15], out = NotOutput);
+    
+    // also will be used in ALoad 
+    Or(a = NotOutput, b = instruction[5], out = ALoad);
+
+    // A register implementation
+
+    ARegister(in = AInput, load = ALoad, out = AInputMux, out[0..14] = addressM);
+    
+    // MUX16 near to cpu
+    
+    Mux16(a = AInputMux, b = inM, sel = instruction[12], out = AluInput2);
+
+
+
+
+    //load for D register
+    And(a = instruction[15], b = instruction[4] , out = DLoad);
+
+    
+    
+    // D Register implementation
+
+    DRegister(in =AluOut, load = DLoad, out = AluInput1);
+    
+
+    // ALU implementation 
+    ALU(x = AluInput1, y = AluInput2, zx = instruction[11] , nx = instruction[10], zy = instruction[9], ny = instruction[8], f = instruction[7], no = instruction[6], out = outM, out = AluOut,  zr = zr, ng = ng);
+    
+
+   // will  be used in implementation of load of pc 
+
+      
+    And(a = instruction[1] , b  = zr, out = j2Andzr);
+
+    And(a = instruction[2] , b = ng, out = j1Andng);
+
+    Not(in = zr, out = Notzr);
+
+    Not(in = ng, out = Notng);
+
+    And(a = instruction[0], b  = Notzr, out = j3AndNotzr);
+
+    And(a = j3AndNotzr, b = Notng, out = j3AndNotzrAndNotng);
+
+    And(a = instruction[2], b = instruction[1], out = j1Andj2);
+    And(a = instruction[0], b  = j1Andj2, out = j1Andj2Andj3);
+
+    Or(a = j2Andzr, b = j1Andng, out = temp1);
+    Or(a = temp1, b = j3AndNotzrAndNotng, out = temp2);
+    Or(a = temp2, b = j1Andj2Andj3, out = temp3);
+    
+    // final load implementation
+    And( a = instruction[15], b = temp3, out = Load);
+    
+    // will be used in inc
+    Not(in = Load, out = NotLoad);
+     
+   // PC implementation
+   PC(in = AInputMux, reset = reset, inc = NotLoad, load = Load, out[0..14] = pc);
+    
+    // writeM implementation
+    And(a = instruction[15], b = instruction[3], out = writeM);
+
+
+
+
+
+
+
+
+
+
+
+
 }
