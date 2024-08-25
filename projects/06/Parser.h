@@ -20,5 +20,6 @@ class Parser
 	string dest();
 	string comp();
 	string jump();
+	bool get_error_found();
 	~Parser();	
 };

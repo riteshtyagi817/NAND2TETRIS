@@ -15,29 +15,44 @@ Parser::Parser(string input_file_name)
 }
 bool Parser::hasMoreLines()
 {
+#ifdef DEBUG
+	cout << __func__ << " starts"  << endl;
+#endif
 	if(in_file.eof()) return false;
 	else return true;
+#ifdef DEBUG
+	cout << __func__ << " ends"  << endl;
+#endif
 
 }
 void Parser::advance()
 {
-	string out = "";
-	do{
+#ifdef DEBUG
+	cout << __func__ << " starts"  << endl;
+#endif
+	string out;
+	string line;
+	while(getline(in_file,line)){
 		string line;
 		getline(in_file, line);
+		//cout << line << endl;
         	stringstream ss(line);
-		while(ss)
-		{
-			string temp;
-			ss >> temp;
-			if(temp == "//")
-				break;
+		
+		string temp;
+		ss >> temp;
+		//cout << " temp " << temp << endl;
+		if(temp == "//") continue;
+		else {
 			out = temp;
+			break;
 
 		}
-		
-	}while(out == "");
-	current_instruction = out;
+	}
+	if(!out.empty())
+		current_instruction = out;
+#ifdef DEBUG
+	cout << __func__ << " ends"  << endl;
+#endif
         return;	
 }
 instruction_type Parser::instructionType()
@@ -143,7 +158,11 @@ string Parser::jump()
 	return out;
 
 }
+bool Parser::get_error_found(){
+	return error_found;
+}
+Parser::~Parser(){
 
-
+}
 
 

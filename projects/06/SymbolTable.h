@@ -6,7 +6,7 @@ using namespace std;
 class SymbolTable{
 
 	public:
-	SymbolTable(){}
+	SymbolTable();
 	void addEntry(string symbol, int address);
 	bool contains(string symbol);
 	int getAddress(string symbol);
