@@ -32,24 +32,26 @@ void Parser::advance()
 #endif
 	string out;
 	string line;
-	while(getline(in_file,line)){
-		string line;
-		getline(in_file, line);
-		//cout << line << endl;
-        	stringstream ss(line);
+	
+	getline(in_file, line);
+	//cout << line << endl;
+        stringstream ss(line);
 		
-		string temp;
-		ss >> temp;
-		//cout << " temp " << temp << endl;
-		if(temp == "//") continue;
-		else {
+	string temp;
+	while(ss >> temp){
+
+		if(temp == "//") break;
+		else{
 			out = temp;
 			break;
 
 		}
-	}
-	if(!out.empty())
+
+	}	
+	if(!out.empty()){
+		cout << out << endl;
 		current_instruction = out;
+	}
 #ifdef DEBUG
 	cout << __func__ << " ends"  << endl;
 #endif
@@ -88,9 +90,8 @@ string Parser::symbol()
 	}
 	else if(c == '@')
 	{
-		while(ss)
+		while(ss >> c)
 		{
-			ss >> c;
 			out += c;
 	
 		}

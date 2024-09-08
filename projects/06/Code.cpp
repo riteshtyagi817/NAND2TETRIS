@@ -1,4 +1,19 @@
 #include "Code.h"
+#include<iostream>
+using std::cout;
+using std::endl;
+
+string Code::dest(string in){
+	
+	string out;
+	if(dest_map.find(in) != dest_map.end()){
+		out = dest_map[in];
+		//cout << "check" << endl;
+	}
+	return out;
+}
+
+
 Code::Code()
 {
 	form_dest_map();

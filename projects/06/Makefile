@@ -1,6 +1,7 @@
 CC = g++
 CFLAGS = -g -c 
-DBFLAG = -DDEBUG
+#DBFLAG = -DDEBUG
+DBFLAG = 
 LDFLAG = -o 
 
 HackAssembler: HackAssembler.o Parser.o  Code.o SymbolTable.o

@@ -5,6 +5,24 @@ using namespace std;
 #include "Code.h"
 #include "SymbolTable.h"
 
+
+
+string u16_to_binary(uint16_t num){
+
+	string out;
+	uint8_t count = 16;
+	while(count--){
+
+		if(num & 1) out += '1';
+		else out += '0';
+		num >>= 1;
+
+	}
+	out += '0';
+	reverse(out.begin(), out.end());
+	return out;
+
+}
 int main(int argc, char *argv[])
 {
 	// we will take the input file as the command line argument
@@ -17,6 +35,7 @@ int main(int argc, char *argv[])
 		cerr << "file " << argv[1] << " could not be opened successfully, so exiting.." << endl;
 		return 0;
 	}
+	Code code;
 	string out;
 	while(parser.hasMoreLines()){
 
@@ -24,10 +43,20 @@ int main(int argc, char *argv[])
 		instruction_type insType =  parser.instructionType();
 		if((insType == A_INSTRUCTION) or (insType == L_INSTRUCTION)){
 			out = parser.symbol();
+			//cout << out << endl;
+			uint16_t num = stoi(out);
+			cout << num << endl;
+			out.clear();
+			out = u16_to_binary(num);
+			cout << out << endl;
 		}
 		else{
-			
+			out.clear();	
 			out = parser.dest();
+			cout << out << endl;
+			out = code.dest(out);
+			cout << out << endl;
+			
 
 		}
 
@@ -38,40 +67,3 @@ int main(int argc, char *argv[])
 
 }
 
-
-
-
-
-
-
-
-
-
-/* demo code 
-
-
- 	string input = argv[1];
-        ifstream in; 
-        in.open(input);
-        string line;
-    
-        while(getline(in,line)){
-    
-        	stringstream ss(line);
-    
-        	string word;
-        	string out;
-        	while(ss)
-        	{   
-                	ss >> word;
-                	if(word == "//")
-                        break;
-                	out = word;
-
-        	}  
-		if(!out.empty())
-        		cout << out << endl;
-	}
-
-	return 0;
-*/
