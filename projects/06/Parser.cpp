@@ -34,7 +34,13 @@ void Parser::advance()
 	string line;
 	
 	getline(in_file, line);
-	//cout << line << endl;
+	cout << "line " << line << endl;
+	if(line.empty())
+	{
+		cout << "line is empty " << endl;
+		current_instruction.clear();
+		return;
+	}
         stringstream ss(line);
 		
 	string temp;
@@ -107,13 +113,27 @@ string Parser::dest()
 	stringstream ss(temp);
 	char c;
 	string out;
-	while(ss)
+	bool flag = false;
+	bool isD = false;
+	while(ss >> c)
 	{
-		ss >> c;
-		if(c == '=') break;
+		//cout << "dest " << c << endl;
+		if(c == '=' ) {
+			isD = true;
+			break;
+		}
+		if( c == ';') break;
 		out += c;
+		cout << " out in dest " << out << endl;
+
 	}
-	return out;
+	if(isD){
+		return out;
+	}
+	else{
+		out.clear();
+		return out;
+	}
 
 
 }
@@ -124,15 +144,20 @@ string Parser::comp()
 	char c;
 	string out;
 	bool flag = false;
-	while(ss)
+	while(ss >> c)
 	{
-		if(flag == true and c != ';')
+		cout << "char in comp " << c << endl;
+		if(c != ';')
 		{
 			out += c;
 		}
-		ss >> c;
-		if(c == '=')
-			flag = true;
+		if( c == '='){
+
+			out.clear();
+		}
+		//ss >> c;
+		
+		if(c == ';') break;
 	}
 	
 
@@ -145,14 +170,14 @@ string Parser::jump()
 	char c;
 	string out;
 	bool flag = false;
-	while(ss)
+	while(ss >> c)
 	{
 		if(flag == true)
 		{
 			out += c;
 
 		}
-		ss >>  c;
+		//ss >>  c;
 		if(c == ';')flag = true;
 	}
 

@@ -21,5 +21,8 @@ class Parser
 	string comp();
 	string jump();
 	bool get_error_found();
+	string getInstruction(){
+		return current_instruction;
+	}
 	~Parser();	
 };

@@ -18,7 +18,7 @@ string u16_to_binary(uint16_t num){
 		num >>= 1;
 
 	}
-	out += '0';
+	//out += '0';
 	reverse(out.begin(), out.end());
 	return out;
 
@@ -30,6 +30,19 @@ int main(int argc, char *argv[])
 		cerr << "Please provide the input in the format [exe] [inputfile.asm] " << endl;
 		return 0;
 	}
+	string outfile;
+	int idx = 0;
+	char *temp = argv[1];
+	while(temp[idx] != '.'){
+		outfile += temp[idx++];
+	}
+	outfile += '.';
+	outfile += string("hack");
+	cout << " output file name " << outfile; 
+
+	ofstream outPut(outfile);
+
+	//outPut << "check";
 	Parser parser(argv[1]);
 	if(parser.get_error_found()){
 		cerr << "file " << argv[1] << " could not be opened successfully, so exiting.." << endl;
@@ -40,24 +53,61 @@ int main(int argc, char *argv[])
 	while(parser.hasMoreLines()){
 
 		parser.advance();
-		instruction_type insType =  parser.instructionType();
-		if((insType == A_INSTRUCTION) or (insType == L_INSTRUCTION)){
-			out = parser.symbol();
-			//cout << out << endl;
-			uint16_t num = stoi(out);
-			cout << num << endl;
-			out.clear();
-			out = u16_to_binary(num);
-			cout << out << endl;
-		}
-		else{
-			out.clear();	
-			out = parser.dest();
-			cout << out << endl;
-			out = code.dest(out);
-			cout << out << endl;
-			
+		if(!parser.getInstruction().empty()){
+			instruction_type insType =  parser.instructionType();
+			if((insType == A_INSTRUCTION) or (insType == L_INSTRUCTION)){
+				cout << " a instruction " << endl;
+				out = parser.symbol();
+				//cout << out << endl;
+				uint16_t num = stoi(out);
+				//cout << num << endl;
+				out.clear();
+				out = u16_to_binary(num);
+				//cout << out << endl;
+				outPut << out << endl;
+			}
+			else{
+				cout << "c instruction " << endl;
+				string whole_str;
+				whole_str += string("111");
+				out.clear();	
+				out = parser.comp();
+				cout << "comp " <<  out << endl;
+				if(out.empty()){
+					
+				}
+				else{
+					out = code.comp(out);
+				}
+				cout << out << endl;
+				whole_str += out;
+				out.clear();
+				out = parser.dest();
+				cout << "final dest " << out << endl;
+				if(out.empty()){
+					out = string("000");
+				}
+				else{
+					out = code.dest(out);
+				}
+				//out = code.dest(out);
+				//cout << out << endl;
+				whole_str += out;
+				out.clear();
+				out = parser.jump();
+				cout << out << endl;
+				out = code.jump(out);
+				cout << out << endl;
+				whole_str += out;
+				while(whole_str.length() < 16){
+					whole_str += '0';
+				}
 
+				outPut << whole_str << endl;
+
+
+
+			}
 		}
 
 

@@ -12,6 +12,26 @@ string Code::dest(string in){
 	}
 	return out;
 }
+string Code::comp(string in){
+	
+	string out;
+	if(comp_map.find(in) != comp_map.end()){
+		out = comp_map[in];
+		//cout << "check" << endl;
+	}
+	return out;
+}
+
+string Code::jump(string in){
+	
+	string out;
+	if(jump_map.find(in) != jump_map.end()){
+		out = jump_map[in];
+		//cout << "check" << endl;
+	}
+	return out;
+}
+
 
 
 Code::Code()
@@ -60,6 +80,7 @@ void Code::form_comp_map()
 	comp_map["M+1"] = "1110111";
 	comp_map["M-1"] = "1110010";
 	comp_map["D+M"] = "1000010";
+	comp_map["D-M"] = "1010011";
 	comp_map["M-D"] = "1000111";
 	comp_map["D&M"] = "1000000";
 	comp_map["D|M"] = "1010101";
