@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 		if(!parser.getInstruction().empty()){
 			instruction_type insType =  parser.instructionType();
 			if((insType == A_INSTRUCTION) or (insType == L_INSTRUCTION)){
-				cout << " a instruction " << endl;
+			//	cout << " a instruction " << endl;
 				out = parser.symbol();
 				//cout << out << endl;
 				uint16_t num = stoi(out);
@@ -67,23 +67,23 @@ int main(int argc, char *argv[])
 				outPut << out << endl;
 			}
 			else{
-				cout << "c instruction " << endl;
+			//	cout << "c instruction " << endl;
 				string whole_str;
 				whole_str += string("111");
 				out.clear();	
 				out = parser.comp();
-				cout << "comp " <<  out << endl;
+			//	cout << "comp " <<  out << endl;
 				if(out.empty()){
 					
 				}
 				else{
 					out = code.comp(out);
 				}
-				cout << out << endl;
+			//	cout << out << endl;
 				whole_str += out;
 				out.clear();
 				out = parser.dest();
-				cout << "final dest " << out << endl;
+			//	cout << "final dest " << out << endl;
 				if(out.empty()){
 					out = string("000");
 				}
@@ -95,9 +95,9 @@ int main(int argc, char *argv[])
 				whole_str += out;
 				out.clear();
 				out = parser.jump();
-				cout << out << endl;
+			//	cout << out << endl;
 				out = code.jump(out);
-				cout << out << endl;
+			//	cout << out << endl;
 				whole_str += out;
 				while(whole_str.length() < 16){
 					whole_str += '0';

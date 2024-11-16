@@ -47,6 +47,7 @@ void Code::form_dest_map()
 	dest_map["M"] = "001";	
 	dest_map["D"] = "010";	
 	dest_map["DM"] = "011";	
+	dest_map["MD"] = "011";
 	dest_map["A"] = "100";	
 	dest_map["AM"] = "101";	
 	dest_map["AD"] = "110";	
