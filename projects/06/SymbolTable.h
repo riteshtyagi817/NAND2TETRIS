@@ -7,11 +7,11 @@ class SymbolTable{
 
 	public:
 	SymbolTable();
-	void addEntry(string symbol, int address);
+	void addEntry(string symbol, string address);
 	bool contains(string symbol);
-	int getAddress(string symbol);
+	string getAddress(string symbol);
 	
 	private:
-	unordered_map<string, int> symTable;
+	unordered_map<string, string> symTable;
 
 };

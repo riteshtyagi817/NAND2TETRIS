@@ -5,6 +5,120 @@ using namespace std;
 #include "Code.h"
 #include "SymbolTable.h"
 
+void handle_lables(string inFile){
+
+	
+	Parser temp(inFile);
+	SymbolTable st;
+	if(temp.get_error_found()){
+		cerr << "file " << inFile << " could not be opened successfully, so exiting.." << endl;
+		return;
+	}
+	int line_count = -1;
+	string str;
+	while(temp.hasMoreLines()){
+
+		temp.advance();
+		if(!temp.getInstruction().empty()){
+			instruction_type insType =  temp.instructionType();
+			if(!(insType == L_INSTRUCTION)){
+				line_count++;
+			}
+			if(insType == L_INSTRUCTION){
+				
+				str.clear();
+				str = temp.symbol();
+				//cout << str << endl
+				if(st.contains(str)){
+					;
+				}
+				else{
+					st.addEntry(str,to_string(line_count+1));
+
+				}
+			}
+
+		}
+
+
+	}
+	return;
+
+	
+}
+void remove_symbols(string inFile){
+
+	Parser temp(inFile);
+	SymbolTable st;
+	if(temp.get_error_found()){
+		cerr << "file " << inFile << " could not be opened successfully, so exiting.." << endl;
+		return;
+	}
+	
+	// out file
+	string outf = "in.asm";
+
+	// string to be put into the file
+	string outS;
+
+	int line_count = -1;
+	ofstream out(outf);
+
+
+
+
+	string str;
+	int varCount = 17;
+	while(temp.hasMoreLines()){
+
+		temp.advance();
+		if(!temp.getInstruction().empty()){
+			instruction_type insType =  temp.instructionType();
+			if(!(insType == L_INSTRUCTION)){
+				line_count++;
+			}
+			if((insType == A_INSTRUCTION) or (insType == L_INSTRUCTION)){
+				//      cout << " a instruction " << endl;
+				
+				if(insType == A_INSTRUCTION){
+					str.clear();
+					str = temp.symbol();
+					//cout << str << endl
+					if(st.contains(str)){
+						outS.clear();
+						outS += "@";
+						outS += st.getAddress(str);
+					}
+					else{
+						st.addEntry(str,to_string(varCount));
+						outS.clear();
+						outS += "@";
+						outS += to_string(varCount);
+
+					}
+					
+				}	
+				// need to do all the things here
+				out << outS << endl;
+			}
+			else{
+				// nothing to do for c instruction 
+				
+				outS.clear();
+				outS = temp.getInstruction();
+				cout << " outS " << outS << endl;
+				out << outS  << endl;
+			}		
+
+
+
+
+		}
+
+	}
+
+
+}
 
 
 string u16_to_binary(uint16_t num){
@@ -26,7 +140,7 @@ string u16_to_binary(uint16_t num){
 int main(int argc, char *argv[])
 {
 	// we will take the input file as the command line argument
-	if(argc < 2){
+	if(argc < 1){
 		cerr << "Please provide the input in the format [exe] [inputfile.asm] " << endl;
 		return 0;
 	}
@@ -41,9 +155,14 @@ int main(int argc, char *argv[])
 	cout << " output file name " << outfile; 
 
 	ofstream outPut(outfile);
+	
+	handle_lables(argv[1]);
+	remove_symbols(argv[1]);
+
 
 	//outPut << "check";
-	Parser parser(argv[1]);
+	Parser parser("in.asm");
+	//Parser parser(argv[1]);
 	if(parser.get_error_found()){
 		cerr << "file " << argv[1] << " could not be opened successfully, so exiting.." << endl;
 		return 0;
