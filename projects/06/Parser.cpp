@@ -34,10 +34,10 @@ void Parser::advance()
 	string line;
 	
 	getline(in_file, line);
-	cout << "line " << line << endl;
+	//cout << "line " << line << endl;
 	if(line.empty())
 	{
-		cout << "line is empty " << endl;
+	//	cout << "line is empty " << endl;
 		current_instruction.clear();
 		return;
 	}
@@ -55,7 +55,7 @@ void Parser::advance()
 
 	}	
 	if(!out.empty()){
-		cout << out << endl;
+	//	cout << out << endl;
 		current_instruction = out;
 	}
 #ifdef DEBUG
@@ -124,7 +124,7 @@ string Parser::dest()
 		}
 		if( c == ';') break;
 		out += c;
-		cout << " out in dest " << out << endl;
+	//	cout << " out in dest " << out << endl;
 
 	}
 	if(isD){
@@ -146,7 +146,7 @@ string Parser::comp()
 	bool flag = false;
 	while(ss >> c)
 	{
-		cout << "char in comp " << c << endl;
+	//	cout << "char in comp " << c << endl;
 		if(c != ';')
 		{
 			out += c;

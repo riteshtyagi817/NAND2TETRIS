@@ -2,6 +2,7 @@
 
 SymbolTable::SymbolTable(){
 
+	symTable.clear();
 	symTable["R0"] = "0";
 	symTable["R1"] = "1"; 
 	symTable["R2"] = "2";
@@ -34,6 +35,7 @@ void SymbolTable::addEntry(string symbol, string address){
 
 }
 bool SymbolTable::contains(string symbol){
+//	cout << " symbol " << symbol << endl;
 	if(symTable.find(symbol) == symTable.end()) return false;
 	else return true;
 

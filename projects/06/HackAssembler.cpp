@@ -5,38 +5,79 @@ using namespace std;
 #include "Code.h"
 #include "SymbolTable.h"
 
-void handle_lables(string inFile){
+bool isNumber(string &s){
+
+	
+	for(auto &val:s){
+
+		if(isdigit(val)){
+
+		}
+		else{
+			return false;
+		}
+	}
+	return true;
+	
+
+
+}
+void handle_lables(string inFile,SymbolTable &st){
 
 	
 	Parser temp(inFile);
-	SymbolTable st;
+	//SymbolTable st;
 	if(temp.get_error_found()){
 		cerr << "file " << inFile << " could not be opened successfully, so exiting.." << endl;
 		return;
 	}
 	int line_count = -1;
 	string str;
+	int varCount = 16;
 	while(temp.hasMoreLines()){
 
 		temp.advance();
 		if(!temp.getInstruction().empty()){
+		//cout << "Instruction: "  << temp.getInstruction() << endl;
 			instruction_type insType =  temp.instructionType();
+		//	cout << "line count " << line_count << endl; 
 			if(!(insType == L_INSTRUCTION)){
 				line_count++;
+				
 			}
 			if(insType == L_INSTRUCTION){
 				
 				str.clear();
 				str = temp.symbol();
-				//cout << str << endl
+				cout << endl;
+				cout << "string " << str << endl;
+				cout << endl;
 				if(st.contains(str)){
 					;
+					cout << "st contains " << str << endl;
+					cout << st.getAddress(str) << endl;
 				}
 				else{
+					cout << "str " << str << " line count " << line_count+1 << endl;
 					st.addEntry(str,to_string(line_count+1));
 
 				}
 			}
+			/*else if(insType == A_INSTRUCTION){
+
+				str.clear();
+				str = temp.symbol();
+				if(st.contains(str)){
+					;
+				}
+				else{
+					st.addEntry(str,to_string(varCount));
+					varCount++;
+
+
+				}
+
+			} */
 
 		}
 
@@ -46,10 +87,10 @@ void handle_lables(string inFile){
 
 	
 }
-void remove_symbols(string inFile){
+void remove_symbols(string inFile,SymbolTable &st){
 
 	Parser temp(inFile);
-	SymbolTable st;
+//	SymbolTable st;
 	if(temp.get_error_found()){
 		cerr << "file " << inFile << " could not be opened successfully, so exiting.." << endl;
 		return;
@@ -68,38 +109,47 @@ void remove_symbols(string inFile){
 
 
 	string str;
-	int varCount = 17;
+	int varCount = 16;
 	while(temp.hasMoreLines()){
 
 		temp.advance();
 		if(!temp.getInstruction().empty()){
 			instruction_type insType =  temp.instructionType();
-			if(!(insType == L_INSTRUCTION)){
-				line_count++;
-			}
+			//if(!(insType == L_INSTRUCTION)){
+			//	line_count++;
+			//}
 			if((insType == A_INSTRUCTION) or (insType == L_INSTRUCTION)){
 				//      cout << " a instruction " << endl;
-				
+
+				cout << " instruction " << temp.getInstruction() << endl;
 				if(insType == A_INSTRUCTION){
 					str.clear();
 					str = temp.symbol();
-					//cout << str << endl
+					cout << str << endl;
 					if(st.contains(str)){
 						outS.clear();
 						outS += "@";
 						outS += st.getAddress(str);
 					}
 					else{
-						st.addEntry(str,to_string(varCount));
-						outS.clear();
-						outS += "@";
-						outS += to_string(varCount);
+						if(isNumber(str)){
+							outS.clear();
+							outS += "@";
+							outS += str;
+						}
+						else{
+							st.addEntry(str,to_string(varCount));
+							outS.clear();
+							outS += "@";
+							outS += to_string(varCount);
+							varCount++;
+						}
 
-					}
+					} 
+				
+				out << outS << endl;
 					
 				}	
-				// need to do all the things here
-				out << outS << endl;
 			}
 			else{
 				// nothing to do for c instruction 
@@ -155,9 +205,10 @@ int main(int argc, char *argv[])
 	cout << " output file name " << outfile; 
 
 	ofstream outPut(outfile);
-	
-	handle_lables(argv[1]);
-	remove_symbols(argv[1]);
+	SymbolTable st;
+
+	handle_lables(argv[1],st);
+	remove_symbols(argv[1],st);
 
 
 	//outPut << "check";
